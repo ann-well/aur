@@ -9,7 +9,6 @@ sheet.column_dimensions['D'].width = 20
 sheet.column_dimensions['E'].width = 30
 sheet.column_dimensions['F'].width = 20
 
-
 window = tk.Tk()
 info = tk.Text(fg="white", bg="black", width=60, height=20)
 info.pack()
@@ -17,8 +16,6 @@ info.pack()
 def addInput():
     allLines = info.get('1.0', 'end').split('\n')
     num = int(len(allLines)) - 2
-    info.insert('end', '\n')
-    info.insert('end', num)
     
     for i in range(0, num, 3):
         patient = allLines[i]
@@ -48,12 +45,10 @@ def addInput():
         sheet.cell(row=i+2, column =2).value = gpCode.group(3)
         
     wb.save('NPRS.xlsx')
-
-
+    wb.close()
 addButton = tk.Button(window,
 text = "ENTER", 
 command = addInput)
 addButton.pack()
 
 window.mainloop()
-
