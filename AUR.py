@@ -3,6 +3,7 @@ import re, pyperclip, openpyxl
 from tkinter import *
 
 window = tk.Tk()
+window.title('AUR')
 info = tk.Text(fg="white", bg="black", width=70, height=20)
 info.pack()
 
@@ -24,12 +25,25 @@ def createNpr():
     npr_lastname.append(pat.group(4).title())
     npr_date.append(pat.group(6))
     npr_address.append(pat.group(7))
-    npr_postcode.append(pat.group(8).upper())
-
+    if pat.group(8) is not None:
+        npr_postcode.append(pat.group(8).upper())
+    else:
+        npr_postcode.append(' ')
     gpRegex = re.compile(r'(Prescribing Account does not match: )+(.*, )+([A-Z][A-Z]\d+ \d+[A-Z][A-Z])+')
     account = gpRegex.search(', '.join([item for item in allLines if item.startswith('Prescribing')]))
-    npr_gp.append(account.group(2))
-    npr_gp_code.append(account.group(3).upper())
+    if account is not None:
+        if account.group(2) is not None:
+            npr_gp.append(account.group(2))
+        else:
+            npr_gp.append(' ')
+        if account.group(3) is not None:
+            npr_gp_code.append(account.group(3).upper())
+        else:
+            npr_gp.append(' ')
+    else:
+        npr_gp.append('')
+        npr_gp_code.append('')
+
     info.delete('1.0', END)
     info.insert('end', '\nSENT TO NPR LIST')
 
@@ -40,7 +54,6 @@ def pullInfo():
     try:
         codeRegex = re.compile(r'[A-Za-z]{1,2}\d\d? \d[A-Za-z][A-Za-z]')
         pat = codeRegex.search(', '.join([item for item in allLines if item.startswith('Contact')]))
-        print(pat.group())
         pyperclip.copy(pat.group().upper())
     except AttributeError:
         info.insert('end', '\n\n---No code found---')
@@ -82,7 +95,7 @@ nprButton.pack(in_=frame, side=RIGHT, padx=30, pady=7)
 addButton.pack(in_=frame, side=RIGHT, padx=172, pady=7)
 
 window.mainloop()
-
+print(npr_gp)
 wb = openpyxl.Workbook()
 sheet = wb.active
 
@@ -108,3 +121,4 @@ for n in range(len(npr_name)):
 
 wb.save('NPRS.xlsx')
 wb.close()
+
