@@ -1,12 +1,15 @@
 import tkinter as tk
 import re, pyperclip
+from tkinter import *
 
 window = tk.Tk()
 info = tk.Text(fg="white", bg="black", width=70, height=20)
 info.pack()
 
+def createNpr():
+    pass
 
-def addInput():
+def pullInfo():
     noCode = False
     allLines = info.get('1.0', 'end').split('\n')
     copy = allLines[0]
@@ -41,9 +44,18 @@ def addInput():
             # info.insert('end', gpCode)
 
 
+frame = Frame(window)
+frame.pack(side=BOTTOM, fill=BOTH, expand=True)
+
 addButton = tk.Button(window,
                       text="ENTER",
-                      command=addInput)
-addButton.pack()
+                      command=pullInfo)
+nprButton = tk.Button(window,
+                      text="NPR",
+                      bg='black', fg='white',
+                      command=createNpr)
+nprButton.pack(in_=frame, side=RIGHT, padx=30, pady=7)
+addButton.pack(in_=frame, side=RIGHT, padx=172, pady=7)
+
 
 window.mainloop()
