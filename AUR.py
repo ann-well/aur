@@ -11,10 +11,10 @@ def addInput():
     allLines = info.get('1.0', 'end').split('\n')
     copy = allLines[0]
     try:
-        codeRegex = re.compile(r'[A-Z]{1,2}\d\d? \d[A-Z][A-Z]')
+        codeRegex = re.compile(r'[A-Za-z]{1,2}\d\d? \d[A-Za-z][A-Za-z]')
         pat = codeRegex.search(copy)
         print(pat.group())
-        pyperclip.copy(pat.group())
+        pyperclip.copy(pat.group().upper())
     except AttributeError:
         print('----No code found----')
         noCode = True
@@ -31,12 +31,12 @@ def addInput():
     info.insert('end', nameLet)
     info.insert('end', '\n\n')
     info.insert('end', date.group())
-    if len(allLines) >= 2:
-        gpRegex = re.compile(r'(Prescribing Account does not match: )+(.*)+([A-Z]{1,2}\d\d? \d[A-Z][A-Z])+')
-        allLinesStr = ' '.join(allLines)
-        gpInfo = gpRegex.search(allLinesStr)
-        if gpInfo is not None:
-            gpCode = gpInfo.group(3)
+    #if len(allLines) >= 2:
+        #gpRegex = re.compile(r'(Prescribing Account does not match: )+(.*)+([A-Za-z]{1,2}\d\d? \d[A-Za-z][A-Za-z])+')
+        #allLinesStr = ' '.join(allLines)
+        #gpInfo = gpRegex.search(allLinesStr)
+        #if gpInfo is not None:
+            #gpCode = gpInfo.group(3)
             # info.insert('end', '\n\n\n')
             # info.insert('end', gpCode)
 
